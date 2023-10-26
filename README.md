@@ -1,4 +1,4 @@
-<h1 align="center">Hi 👋, I'm Gaston Grehan-Savona</h1>
+<h1 align="center">I'm Gaston Grehan-Savona</h1>
 <h3 align="center">I'm a student learning computer science, and programmer for VEX robotics team 6104G</h3>
 
 <p align="left"> <img src="https://komarev.com/ghpvc/?username=lunar-eclipse255&label=Profile%20views&color=0e75b6&style=flat" alt="lunar-eclipse255" /> </p>
