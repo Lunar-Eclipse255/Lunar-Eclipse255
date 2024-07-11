@@ -2,7 +2,7 @@
 <h3 align="center">I'm a student learning computer science, and programmer for VEX robotics team 6104G</h3>
 
 <p align="center">
-  <img src="https://komarev.com/ghpvc/?username=lunar-eclipse255&label=Profile%20views&color=0e75b6&style=flat" alt="lunar-eclipse255" />
+  <img src="https://komarev.com/ghpvc/?username=lunar-eclipse255&label=Profile%20views&color=0e75b6&style=for-the-badge" alt="lunar-eclipse255" />
 </p>
 
 <h3 align="center">Languages and Tools:</h3>
