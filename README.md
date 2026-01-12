@@ -16,7 +16,7 @@
 
 <h2 align="center">Time Coding Languages (Since November 2023):</h2>
 <p align="center">
-  <img src="[![Harlok's WakaTime stats](https://github-readme-stats.vercel.app/api/wakatime?username=Lunar255)](https://github.com/anuraghazra/github-readme-stats)" alt="Wakatime Stats" />
+  <img src="https://github-readme-stats.vercel.app/api/wakatime?username=Lunar255&layout=compact&langs_count=10&theme=dracula&bg_color=24273a&text_color=cad3f5&icon_color=c6a0f6&title_color=8bd5ca" alt="Wakatime Stats" />
 </p>
 
 <h2 align="center">GitHub Stats:</h2>
