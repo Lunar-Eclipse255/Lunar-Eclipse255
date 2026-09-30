@@ -24,6 +24,5 @@
   <a href="https://git.io/streak-stats">
     <img src="https://streak-stats.demolab.com?user=Lunar-Eclipse255&theme=catppuccin-macchiato&hide_border=true" alt="GitHub Streak" />
   </a>
-  <img src="https://github-readme-stats-five-virid-85.vercel.app/api?username=lunar-eclipse255&show_icons=true&theme=dracula&locale=en&bg_color=24273a&text_color=cad3f5&icon_color=c6a0f6&title_color=8bd5ca" alt="GitHub Stats" />
 </p>
 
