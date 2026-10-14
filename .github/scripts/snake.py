@@ -16,7 +16,8 @@ import os
 import urllib.request
 
 # Catppuccin Macchiato
-BG_EMPTY = "#363a4f"                                   # Surface 0
+# Empty and eaten days: a soft Mauve tint (30% Mauve over Base) instead of grey.
+BG_EMPTY = "#554b72"
 LEVEL_COLORS = ["#8bd5ca", "#8aadf4", "#b7bdf8", "#c6a0f6"]  # Teal, Blue, Lavender, Mauve
 SNAKE_HEAD = "#f5bde6"                                 # Pink
 SNAKE_BODY = "#f5bde6"
@@ -77,31 +78,24 @@ def cell_xy(col, row):
     return PAD + col * PITCH, PAD + row * PITCH
 
 
-def build_path(grid, tail_room):
-    """Serpentine path: enter from the left, sweep every week, exit off the right edge.
+def build_path(grid, hold_steps):
+    """Serpentine path that stays on the grid: sweep every week, then hold at the end.
 
     Returns (positions, eat) where positions[i] is the pixel (x, y) of the head at step i
-    and eat[i] is the (col, row) eaten at step i, or None.
+    and eat[i] is the (col, row) eaten at step i, or None. During the hold the head stays
+    put while the body curls up into the last cell, so nothing ever leaves the graph.
     """
-    cols = len(grid)
     positions, eat = [], []
-
-    # Slide in from off-screen left along the top row.
-    for k in range(START_LENGTH, 0, -1):
-        positions.append(cell_xy(-k, 0))
-        eat.append(None)
-
-    for c in range(cols):
+    for c in range(len(grid)):
         rows = range(ROWS) if c % 2 == 0 else range(ROWS - 1, -1, -1)
         for r in rows:
-            positions.append(cell_xy(c, r))
             level = grid[c][r]
+            if level is None:  # days outside the calendar (first/last week) aren't on the graph
+                continue
+            positions.append(cell_xy(c, r))
             eat.append((c, r) if level else None)
-
-    # Slide out to the right until the whole tail has left the grid.
-    last_row = (ROWS - 1) if (cols - 1) % 2 == 0 else 0
-    for k in range(1, tail_room + 2):
-        positions.append(cell_xy(cols - 1 + k, last_row))
+    for _ in range(hold_steps):
+        positions.append(positions[-1])
         eat.append(None)
     return positions, eat
 
@@ -111,23 +105,25 @@ def pct(step, total):
 
 
 def render(grid, step_s, max_len):
-    eaten_days = sum(1 for col in grid for lvl in col if lvl)
-    final_len = START_LENGTH + eaten_days
+    total_food = sum(1 for col in grid for lvl in col if lvl)
+    final_len = START_LENGTH + total_food
     if max_len:
         final_len = min(final_len, max_len)
 
-    positions, eat = build_path(grid, final_len)
+    # Hold at the end long enough for the tail to catch up, plus a short pause.
+    pause_steps = int(round(1.5 / step_s))
+    positions, eat = build_path(grid, final_len + pause_steps)
     n = len(positions)
     dur = n * step_s
 
-    # Snake length after each step, and when each segment first appears.
-    length, lengths = START_LENGTH, []
+    # Growth is spread over the whole run, so the snake keeps getting longer all the
+    # way across the graph instead of hitting the cap in the first few weeks.
+    grow = (final_len - START_LENGTH) / total_food if total_food else 0
+    eaten, lengths = 0, []
     for i in range(n):
         if eat[i]:
-            length += 1
-            if max_len:
-                length = min(length, max_len)
-        lengths.append(length)
+            eaten += 1
+        lengths.append(START_LENGTH + int(round(eaten * grow)))
     appear = {}
     for i in range(n):
         for k in range(lengths[i]):
