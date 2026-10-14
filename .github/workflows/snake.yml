@@ -15,11 +15,20 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: Platane/snk@v3
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
         with:
-          github_user_name: ${{ github.repository_owner }}
-          outputs: |
-            dist/github-snake-dark.svg?palette=github-dark&color_snake=#f5bde6&color_dots=#363a4f,#8bd5ca,#8aadf4,#b7bdf8,#c6a0f6
+          python-version: "3.12"
+
+      - name: Draw the growing snake
+        run: python .github/scripts/snake.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_USER: ${{ github.repository_owner }}
+          OUT: dist/github-snake-dark.svg
+          MAX_LENGTH: "35"     # 0 = keep growing for every day eaten
+          STEP_SECONDS: "0.08" # lower = faster snake
 
       - uses: crazy-max/ghaction-github-pages@v4
         with:
